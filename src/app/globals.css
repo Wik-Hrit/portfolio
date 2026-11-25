@@ -1,0 +1,200 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------- Tokens ---------- */
+:root {
+  --bg: #f6f5f1;
+  --bg-rail: #efede7;
+  --surface: #ffffff;
+  --surface-2: #f1efea;
+  --ink: #16171b;
+  --ink-2: #3a3d46;
+  --muted: #5c6170;
+  --faint: #6b7080;
+  --line: #e2dfd7;
+  --line-strong: #cfcbc1;
+  --accent: #2b3bd1;
+  --accent-ink: #ffffff;
+  --accent-soft: #e6e8fb;
+  --grid: rgba(43, 59, 209, 0.07);
+  --ok: #1f8a4c;
+  --danger: #b4232f;
+  --shadow: 0 1px 2px rgba(22, 23, 27, 0.04), 0 8px 24px -12px rgba(22, 23, 27, 0.12);
+  --shadow-lift: 0 2px 4px rgba(22, 23, 27, 0.05), 0 16px 32px -16px rgba(22, 23, 27, 0.2);
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0f1013;
+  --bg-rail: #131418;
+  --surface: #17181d;
+  --surface-2: #1d1f25;
+  --ink: #ecebe6;
+  --ink-2: #c9c9c4;
+  --muted: #9a9fab;
+  --faint: #80858f;
+  --line: #262830;
+  --line-strong: #353843;
+  --accent: #8e9bff;
+  --accent-ink: #0f1013;
+  --accent-soft: #1f2340;
+  --grid: rgba(142, 155, 255, 0.08);
+  --ok: #4fc883;
+  --danger: #ff7b85;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.3), 0 16px 32px -16px rgba(0, 0, 0, 0.7);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-rail: var(--bg-rail);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-ok: var(--ok);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --shadow-card: var(--shadow);
+  --shadow-lift: var(--shadow-lift);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- Base ---------- */
+html {
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 5rem;
+}
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+input,
+textarea {
+  caret-color: var(--accent);
+}
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+/* Links inside running text */
+.prose-link {
+  color: var(--ink);
+  text-decoration-line: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 0.2s;
+}
+.prose-link:hover {
+  text-decoration-color: var(--accent);
+}
+
+/* Engineering grid used behind schematics */
+.schematic-ground {
+  background-color: var(--surface-2);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: -1px -1px;
+}
+
+/* ---------- Motion ---------- */
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.page-enter {
+  animation: page-in 0.5s var(--ease-out-expo) both;
+}
+
+@keyframes trace {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes pulse-dot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--ok) 45%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--ok) 0%, transparent);
+  }
+}
+.status-dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+/* Schematic strokes draw in on hover of a card */
+.schematic-trace {
+  stroke-dasharray: 240;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1.2s var(--ease-out-expo);
+}
+.group:hover .schematic-trace {
+  animation: redraw 1.4s var(--ease-out-expo);
+}
+@keyframes redraw {
+  from {
+    stroke-dashoffset: 240;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
